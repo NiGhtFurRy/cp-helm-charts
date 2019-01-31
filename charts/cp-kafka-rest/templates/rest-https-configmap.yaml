@@ -1,0 +1,20 @@
+{{- if .Values.https.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-rest-https-config
+  namespace: default
+data:
+  KAFKA_REST_SSL_KEYSTORE_LOCATION: {{ .Values.https.keystoreLocation }}
+  KAFKA_REST_SSL_TRUSTSTORE_LOCATION: {{ .Values.https.truststoreFile }}
+  KAFKA_REST_SSL_KEYSTORE_TYPE: {{ .Values.https.keystoreType }}
+  KAFKA_REST_SSL_TRUSTSTORE_TYPE: {{ .Values.https.trustStoreType }}
+  KAFKA_REST_SSL_PROTOCOL: {{ .Values.https.protocol }}
+  KAFKA_REST_SSL_PROVIDER: {{ .Values.https.provider }}
+  KAFKA_REST_SSL_CLIENT_AUTH: {{ .Values.https.clientAuthRequired }}
+  KAFKA_REST_SSL_ENABLED_PROTOCOLS: {{ .Values.https.enabledProtocols }}
+  KAFKA_REST_SSL_KEYMANAGER_ALGORITHM: {{ .Values.https.keymanagerAlgorithm }}
+  KAFKA_REST_SSL_TRUSTMANAGER_ALGORITHM: {{ .Values.https.trustmanagerAlgorithm }}
+  KAFKA_REST_SSL_CIPHER_SUITES: {{ .Values.https.cipherSuites }}
+  KAFKA_REST_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: {{ .Values.https.endpointIdentificationAlgorithm }}
+{{- end }}

@@ -68,10 +68,25 @@ spec:
           envFrom:
           - configMapRef:
             name: {{ .Release.Name }}-rest-https-config
-          - secretRef:
-            name: {{ .Release.Name }}-rest-https-secret
-          {{- end }}}}
+          volumeMounts:
+          - name: https
+            mountPath: "/etc/kafka/https"
+          {{- end }}
           env:
+          {{- if .Values.https.enabled }}
+          - name: KAFKA_REST_SSL_KEYSTORE_PASSWORD
+              secretKeyRef:
+                name: {{ .Release.Name }}-rest-https-secret
+                key: keystorePassword
+          - name: KAFKA_REST_SSL_TRUSTSTORE_PASSWORD
+              secretKeyRef:
+                name: {{ .Release.Name }}-rest-https-secret
+                key: truststorePassword
+          - name: KAFKA_REST_SSL_KEY_PASSWORD
+              secretKeyRef:
+                name: {{ .Release.Name }}-rest-https-secret
+                key: keyPassword
+          {{- end }}
           - name: KAFKA_REST_HOST_NAME
             valueFrom:
               fieldRef:
@@ -95,6 +110,11 @@ spec:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
       {{- end }}
       volumes:
+      {{- if or .Values.https.enabled }}
+      - name: https
+        secret:
+          secretName: {{ .Release.Name }}-rest-https-secret
+      {{- end }}
       {{- if .Values.prometheus.jmx.enabled }}
       - name: jmx-config
         configMap:
