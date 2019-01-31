@@ -64,6 +64,13 @@ spec:
             {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
+          {{- if .Values.https.enabled }}
+          envFrom:
+          - configMapRef:
+            name: {{ .Release.Name }}-rest-https-config
+          - secretRef:
+            name: {{ .Release.Name }}-rest-https-secret
+          {{- end }}}}
           env:
           - name: KAFKA_REST_HOST_NAME
             valueFrom:

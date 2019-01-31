@@ -96,6 +96,15 @@ cp-kafka-rest:
   #  - name: "regcred"
   heapOptions: "-Xms512M -Xmx512M"
   resources: {}
+  https:
+    enabled: true
+    clientAuthRequired: true
+    keystoreFile: rest.https.keystore.jks
+    keystorePassword: password
+    keyPassword: keypassword
+    truststoreFile: rest.https.truststore.jks
+    truststorePassword: tspassword
+    
   ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
   ## and remove the curly braces after 'resources:'
   #  limits:
